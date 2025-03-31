@@ -1,5 +1,4 @@
- 
-import Link from "next/link"
+ import Link from "next/link"
 import { ArrowLeft, FileText, Download } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -10,12 +9,15 @@ import { HotelLogo } from "@/components/hotel-logo"
 
 export default function ReservasPage() {
   return (
+<section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-hotelblue/10 to-white">
+  {
     <div className="flex flex-col min-h-screen">
       <header className="border-b bg-white shadow-sm">
         <div className="container flex h-20 items-center px-4 sm:px-6 lg:px-8">
           <HotelLogo />
         </div>
       </header>
+      
       <main className="flex-1 container py-10 px-4 md:px-6">
         <div className="flex items-center mb-8">
           <Link href="/" className="mr-4">
@@ -29,10 +31,10 @@ export default function ReservasPage() {
 
         <Tabs defaultValue="activas" className="mb-8">
           <TabsList className="bg-hotelblue/10">
-            <TabsTrigger value="activas" className="data-[state=active]:bg-hotelblue data-[state=active]:text-white">
+            <TabsTrigger value="activas" className="data-[state=active]:bg-hotelblue data-[state=active]:text-black">
               Activas
             </TabsTrigger>
-            <TabsTrigger value="pasadas" className="data-[state=active]:bg-hotelblue data-[state=active]:text-white">
+            <TabsTrigger value="pasadas" className="data-[state=active]:bg-hotelblue data-[state=active]:text-black">
               Pasadas
             </TabsTrigger>
           </TabsList>
@@ -245,6 +247,10 @@ export default function ReservasPage() {
         </div>
       </footer>
     </div>
+    
+  }
+  </section>
   )
+  
 }
 

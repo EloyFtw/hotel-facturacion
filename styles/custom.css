@@ -1,0 +1,17 @@
+/* styles/custom.css */
+.btn-hotel {
+    background-color: #0077c8 !important;
+    color: white !important;
+  }
+  
+  .btn-hotel:hover {
+    background-color: rgba(0, 119, 200, 0.9) !important;
+  }
+  
+  .gradient-top {
+    background: linear-gradient(to top, rgba(0, 119, 200, 0.1), white) !important;
+  }
+  
+  .gradient-bottom {
+    background: linear-gradient(to bottom, rgba(0, 119, 200, 0.1), white) !important;
+  }

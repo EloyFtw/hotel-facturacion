@@ -119,3 +119,43 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Añade esto al final de globals.css */
+.bg-hotelblue {
+  background-color: #0077c8 !important;
+}
+
+.text-hotelblue {
+  color: #0077c8 !important;
+}
+
+.hover\:bg-hotelblue\/90:hover {
+  background-color: rgba(0, 119, 200, 0.9) !important;
+}
+
+.bg-gradient-to-b {
+  background-image: linear-gradient(to bottom, var(--tw-gradient-stops)) !important;
+}
+
+.bg-gradient-to-t {
+  background-image: linear-gradient(to top, var(--tw-gradient-stops)) !important;
+}
+
+.from-hotelblue\/10 {
+  --tw-gradient-from: rgba(0, 119, 200, 0.1) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgba(0, 119, 200, 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+.to-white {
+  --tw-gradient-to: #ffffff var(--tw-gradient-to-position) !important;
+}
+
+[data-state="active"].tabs-trigger-hotel {
+  background-color: #0077c8 !important;
+  color: white !important;
+}
+
+.tabs-list-hotel {
+  background-color: rgba(0, 119, 200, 0.1) !important;
+}

@@ -17,14 +17,14 @@ export function HotelLogo({ className = "", showText = true, size = "medium" }: 
   return (
     <Link href="/" className={`flex items-center ${className}`}>
       <div className="relative">
-        <Image
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo-87x71bVVBJAM6bWOY1W6QK0yFvChjb.png"
-          alt="Hotel Del Ángel Logo"
-          width={sizes[size].width}
-          height={sizes[size].height}
-          priority
-          className="object-contain"
-        />
+      <Image
+        src="/images/logo.png"
+        alt="Hotel Del Ángel Logo"
+        width={sizes[size].width}
+        height={sizes[size].height}
+        priority
+        className="object-contain"
+      />
       </div>
       {showText && <span className="sr-only">Hotel Del Ángel</span>}
     </Link>

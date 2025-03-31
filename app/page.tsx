@@ -12,7 +12,7 @@ export default function Home() {
           <HotelLogo />
           <nav className="ml-auto flex gap-4">
             <Link href="/facturacion">
-              <Button variant="ghost">Facturación</Button>
+              <Button className="bg-hotelblue hover:bg-hotelblue/90 text-white">Facturar </Button>
             </Link>
             <Link href="/reservas">
               <Button variant="ghost">Mis Estancias</Button>
