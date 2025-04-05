@@ -200,7 +200,7 @@ export default function FacturacionPage() {
                     <div className="text-right">$700.00</div>
                   </div>
                   <div className="grid grid-cols-4 gap-4 p-4 border-b">
-                    <div>Minibar</div>
+                    <div>Toallas</div>
                     <div className="text-right">$180.00</div>
                     <div className="text-right">1</div>
                     <div className="text-right">$180.00</div>
