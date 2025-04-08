@@ -1,41 +1,56 @@
 "use client"
+ 
+import type React from "react";
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import { ArrowLeft, Search } from "lucide-react";
 
-import type React from "react"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { HotelLogo } from "@/components/hotel-logo";
 
-import { useState } from "react"
-import Link from "next/link"
-import { ArrowLeft, Search } from "lucide-react"
+import { parse, eachDayOfInterval, format } from "date-fns";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-// Update the imports to include the HotelLogo
-import { HotelLogo } from "@/components/hotel-logo"
+const parseDate = (dateStr: string) => parse(dateStr, "dd/MM/yyyy", new Date());
 
 export default function FacturacionPage() {
-  const [folioReserva, setFolioReserva] = useState("")
-  const [reservaEncontrada, setReservaEncontrada] = useState(false)
+  const checkIn = "15/03/2024";
+  const checkOut = "18/03/2024";
+  const precioPorNoche = 2500;
+
+  const nochesDisponibles = useMemo(() => {
+    return eachDayOfInterval({
+      start: parseDate(checkIn),
+      end: new Date(parseDate(checkOut).getTime() - 86400000),
+    });
+  }, [checkIn, checkOut]);
+
+  const [nochesSeleccionadas, setNochesSeleccionadas] = useState<Date[]>(nochesDisponibles);
+  const totalNoches = nochesSeleccionadas.length;
+  const totalHospedaje = totalNoches * precioPorNoche;
+
+  const [folioReserva, setFolioReserva] = useState("");
+  const [reservaEncontrada, setReservaEncontrada] = useState(false);
 
   const buscarReserva = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Aquí iría la lógica para buscar la reserva en el backend
-    // Por ahora, simulamos que se encontró la reserva si el folio no está vacío
-    if (folioReserva.trim() !== "") {
-      setReservaEncontrada(true)
-    }
-  }
+    e.preventDefault();
+    if (folioReserva.trim() !== "") setReservaEncontrada(true);
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Replace the header with this updated version */}
+      {/* Encabezado con logo */}
       <header className="border-b bg-white shadow-sm">
         <div className="container flex h-20 items-center px-4 sm:px-6 lg:px-8">
           <HotelLogo />
         </div>
       </header>
+
       <main className="flex-1 container py-10 px-4 md:px-6">
+        {/* Título y botón volver */}
         <div className="flex items-center mb-8">
           <Link href="/" className="mr-4">
             <Button variant="ghost" size="icon">
@@ -43,15 +58,14 @@ export default function FacturacionPage() {
               <span className="sr-only">Volver</span>
             </Button>
           </Link>
-          {/* Update the main section title */}
           <h1 className="text-2xl font-bold text-hotelblue">Facturación de Estancia</h1>
         </div>
 
+        {/* Si no se ha buscado aún la reserva */}
         {!reservaEncontrada ? (
           <Card className="max-w-md mx-auto">
             <CardHeader>
-              {/* Update the card header colors */}
-              <CardTitle className="text-hotelblue">Buscar </CardTitle>
+              <CardTitle className="text-hotelblue">Buscar</CardTitle>
               <CardDescription>Ingrese su número de folio para generar su factura</CardDescription>
             </CardHeader>
             <CardContent>
@@ -66,17 +80,15 @@ export default function FacturacionPage() {
                         value={folioReserva}
                         onChange={(e) => setFolioReserva(e.target.value)}
                       />
-                      {/* Update the button colors */}
                       <Button type="submit" size="icon" className="bg-hotelblue hover:bg-hotelblue/90">
                         <Search className="h-4 w-4" />
-                        <span className="sr-only">Buscar</span>
                       </Button>
                     </div>
                   </div>
                 </div>
               </form>
             </CardContent>
-            <CardFooter className="flex flex-col gap-2">
+            <CardFooter>
               <p className="text-sm text-muted-foreground">
                 Si no conoce su número de folio, puede consultarlo en su correo de confirmación o contactar a recepción.
               </p>
@@ -84,48 +96,45 @@ export default function FacturacionPage() {
           </Card>
         ) : (
           <div className="grid gap-6 md:grid-cols-2">
+            {/* Detalles de Estancia */}
             <Card>
               <CardHeader>
-                {/* Update the reservation details card */}
                 <CardTitle className="text-hotelblue">Detalles de su Estancia</CardTitle>
                 <CardDescription>Folio: {folioReserva}</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="grid gap-4">
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="text-sm font-medium">Huésped:</div>
-                    <div className="text-sm">Juan Pérez</div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="text-sm font-medium">Check-in:</div>
-                    <div className="text-sm">15/03/2024</div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="text-sm font-medium">Check-out:</div>
-                    <div className="text-sm">18/03/2024</div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="text-sm font-medium">Habitación:</div>
-                    <div className="text-sm">Doble 203</div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="text-sm font-medium">Noches:</div>
-                    <div className="text-sm">3</div>
-                  </div>
+              <CardContent className="grid gap-4 text-sm">
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="font-medium">Huésped:</div>
+                  <div>Juan Pérez</div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="font-medium">Check-in:</div>
+                  <div>{checkIn}</div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="font-medium">Check-out:</div>
+                  <div>{checkOut}</div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="font-medium">Habitación:</div>
+                  <div>Doble 203</div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="font-medium">Noches:</div>
+                  <div>{totalNoches}</div>
                 </div>
               </CardContent>
             </Card>
 
+            {/* Facturación Tabs */}
             <Card>
               <CardHeader>
-                {/* Update the billing card */}
                 <CardTitle className="text-hotelblue">Facturación</CardTitle>
                 <CardDescription>Complete los datos para su factura</CardDescription>
               </CardHeader>
               <CardContent>
                 <Tabs defaultValue="personal">
-                  {/* Update the tabs */}
-                  <TabsList className="grid w-full grid-cols-2 mb-4 tabs-list-hotel">
+                <TabsList className="grid w-full grid-cols-2 mb-4 tabs-list-hotel">
                   <TabsTrigger value="personal" className="tabs-trigger-hotel">
                     Personal
                   </TabsTrigger>
@@ -168,58 +177,67 @@ export default function FacturacionPage() {
                 </Tabs>
               </CardContent>
               <CardFooter>
-                {/* Update the generate invoice button */}
                 <Button className="w-full bg-hotelblue hover:bg-hotelblue/90">Generar Factura</Button>
               </CardFooter>
             </Card>
 
+            {/* Resumen de Cargos */}
             <Card className="md:col-span-2">
               <CardHeader>
-                {/* Update the charges summary card */}
                 <CardTitle className="text-hotelblue">Resumen de Cargos</CardTitle>
                 <CardDescription>Desglose de los cargos de su estancia</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="border rounded-lg">
-                  <div className="grid grid-cols-4 gap-4 p-4 font-medium border-b">
+                <div className="border rounded-lg divide-y">
+                  <div className="grid grid-cols-4 gap-4 p-4 font-medium bg-gray-100">
                     <div>Concepto</div>
                     <div className="text-right">Precio Unitario</div>
                     <div className="text-right">Cantidad</div>
                     <div className="text-right">Total</div>
                   </div>
-                  <div className="grid grid-cols-4 gap-4 p-4 border-b">
-                    <div>Habitación Suite Deluxe</div>
-                    <div className="text-right">$2,500.00</div>
-                    <div className="text-right">3 noches</div>
-                    <div className="text-right">$7,500.00</div>
+
+                  {/* Habitación */}
+                  <div className="grid grid-cols-4 gap-4 p-4">
+                    <div>
+                      Habitación Suite Deluxe
+                      <div className="mt-2 text-sm text-gray-600">Selecciona noches a facturar:</div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-1">
+                                {nochesDisponibles.map((noche, idx) => {
+                                  const fechaStr = format(noche, "dd/MM/yyyy");
+                                  const isChecked = nochesSeleccionadas.some(n => format(n, "dd/MM/yyyy") === fechaStr);
+                                  return (
+                                    <label
+                                      key={idx}
+                                      className="flex items-center space-x-2 text-sm bg-gray-50 border rounded-md px-2 py-1 hover:bg-gray-100 cursor-pointer"
+                                    >
+                                      <input
+                                        type="checkbox"
+                                        checked={isChecked}
+                                        onChange={() => {
+                                          if (isChecked) {
+                                            setNochesSeleccionadas(nochesSeleccionadas.filter(n => format(n, "dd/MM/yyyy") !== fechaStr));
+                                          } else {
+                                            setNochesSeleccionadas([...nochesSeleccionadas, noche]);
+                                          }
+                                        }}
+                                      />
+                                      <span>{fechaStr}</span>
+                                    </label>
+                                  );
+                       })}                        
+                      </div>
+                    </div>
+                    <div className="text-right">{precioPorNoche.toLocaleString("es-MX", { style: "currency", currency: "MXN" })}</div>
+                    <div className="text-right">{totalNoches} noche{totalNoches > 1 ? "s" : ""}</div>
+                    <div className="text-right">{totalHospedaje.toLocaleString("es-MX", { style: "currency", currency: "MXN" })}</div>
                   </div>
-                  <div className="grid grid-cols-4 gap-4 p-4 border-b">
+
+                  {/* Servicio a la habitación (ejemplo adicional) */}
+                  <div className="grid grid-cols-4 gap-4 p-4">
                     <div>Servicio a la habitación</div>
                     <div className="text-right">$350.00</div>
                     <div className="text-right">2</div>
                     <div className="text-right">$700.00</div>
-                  </div>
-                  <div className="grid grid-cols-4 gap-4 p-4 border-b">
-                    <div>Toallas</div>
-                    <div className="text-right">$180.00</div>
-                    <div className="text-right">1</div>
-                    <div className="text-right">$180.00</div>
-                  </div>
-                  <div className="grid grid-cols-4 gap-4 p-4 font-medium">
-                    <div className="col-span-3 text-right">Subtotal:</div>
-                    <div className="text-right">$8,380.00</div>
-                  </div>
-                  <div className="grid grid-cols-4 gap-4 px-4 pb-2 font-medium">
-                    <div className="col-span-3 text-right">IVA (16%):</div>
-                    <div className="text-right">$1,340.80</div>
-                  </div>
-                   <div className="grid grid-cols-4 gap-4 px-4 pb-2 font-medium">
-                    <div className="col-span-3 text-right">ISH (4%):</div>
-                    <div className="text-right">$388.83</div>
-                  </div>
-                  <div className="grid grid-cols-4 gap-4 px-4 pb-4 font-bold">
-                    <div className="col-span-3 text-right">Total:</div>
-                    <div className="text-right">$9,720.80</div>
                   </div>
                 </div>
               </CardContent>
@@ -267,6 +285,5 @@ export default function FacturacionPage() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
-
