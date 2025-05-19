@@ -44,10 +44,10 @@ export function InvoiceTemplate({
         <div>
           <HotelLogo size="medium" />
           <div className="mt-4 text-sm text-gray-600">
-            <p>Av. Paseo de la Reforma 24</p>
-            <p>Col. Centro, Ciudad de México</p>
-            <p>CP 06040, México</p>
-            <p>Tel: +52 55 1234 5678</p>
+            <p>Abasolo col. Pueblo Nuevo</p>
+            <p>Col. Centro, La Paz</p>
+            <p>CP 23080, México</p>
+            <p>Tel: +52 612 1234 5678</p>
           </div>
         </div>
         <div className="text-right">
